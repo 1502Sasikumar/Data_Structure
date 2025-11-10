@@ -1,69 +1,54 @@
 //Scavenger hunt using linkedlist
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-struct Clue
-{
-	char *ch;
-	struct Clue *prev;
-	struct Clue *next;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Node {
+    char clue[100];
+    struct Node* next;
 };
-struct Clue *head=NULL;
-struct Clue *tail=NULL;
 
-//insertAtEnd
-void insertAtEnd(char *chr)
-{
-	struct Clue *newClue=(struct Clue*)malloc(sizeof(struct Clue));
-	newClue->ch=chr;
-	newClue->next=NULL;
-	newClue->prev=tail;
-	if(head==NULL)
-	{
-	    head=tail=newClue;
-	}
-	else
-	{
-	    tail->next=newClue;
-	    tail->prev=tail;
-	    tail=newClue;
-	}
+struct Node* createNode(char *msg) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    strcpy(newNode->clue, msg);
+    newNode->next = NULL;
+    return newNode;
 }
-//delAtEnd
-void delAtEnd(){
-    tail=tail->prev;
-    free(tail->next);
-    tail->next=NULL;
-}
-// //display
-void display()
-{
-	struct Clue *temp=head;
-	while(temp!=NULL)
-	{
-		printf("%s ->",temp->ch);
-		temp=temp->next;
-	}
-	printf("NULL\n");
-}
-void play(){
-    display();
-    char str[20];
-    scanf("%s",str);
-    while(strcmp(str,"CODE")){
-        scanf("%s",str);
+
+
+void startHunt(struct Node* head) {
+    struct Node* current = head;
+    int step = 1;
+
+    while (current != NULL) {
+        printf("\nClue %d: %s\n", step, current->clue);
+
+        if (current->next != NULL) {
+            printf("Press Enter to go to the next clue...");
+            getchar();
+        }
+        
+        current = current->next;
+        step++;
     }
-    printf("You found treassure\n");
-}
-int main() {
-	insertAtEnd("Ram");
- 	insertAtEnd("Sasi");
-    insertAtEnd("Sindhu");
- 	insertAtEnd("Nivi");
-	display();
-	printf("\n");
-// 	delAtEnd();
-// 	display();
-//play();
 
+    printf("\n Congratulations! You found the TREASURE! \n");
+}
+
+int main() {
+    struct Node *clue1, *clue2, *clue3, *clue4;
+
+    // Creating clues
+    clue1 = createNode("Go to the main entrance of the college.");
+    clue2 = createNode("Look under the bench near the playground.");
+    clue3 = createNode("Search inside the library near C programming section.");
+    clue4 = createNode("Final hint: The treasure is in the lab drawer!");
+
+    clue1->next = clue2;
+    clue2->next = clue3;
+    clue3->next = clue4;
+
+    startHunt(clue1);
+
+    return 0;
 }
