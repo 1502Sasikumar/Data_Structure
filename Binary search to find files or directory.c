@@ -1,0 +1,50 @@
+// Binary search to find files or directory
+#include<stdio.h>
+#include<string.h>
+#define SIZE 100
+
+int binarysearch(char arr[][SIZE],int n,char target[]){
+    int low=0;
+    int high=n-1;
+    while(low<high){
+        int mid =(low+high)/2;
+        int cmp=strcmp(arr[mid],target);
+        
+        if(cmp==0){
+            return mid;
+        }
+        else if(cmp > 0){
+            high = mid - 1;
+        }
+        else
+            low = mid + 1;
+    }
+    return -1;
+}
+int main()
+{   int n;
+    char files[50][SIZE], target[SIZE];
+    printf("Enter the No of word to include:");
+    scanf("%d",&n);
+    getchar();
+    
+    printf("Enter the words:\n");
+    for(int i=0; i<n; i++){
+        printf("Name %d\n",i+1);
+        fgets(files[i],SIZE,stdin);
+        files[i][strcspn(files[i], "\n")]=0;
+    }
+    
+    printf("Enter the file to search\n");
+    fgets(target,SIZE,stdin);
+    target[strcspn(target, "\n")]=0;
+    
+    int res=binarysearch(files,n,target);
+    
+    if(res==-1){
+        printf("\n %s not found in list.\n",target);
+    }
+    else
+        printf("%s found in list.\n",target);
+        
+}
